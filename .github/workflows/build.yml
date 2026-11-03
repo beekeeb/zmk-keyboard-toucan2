@@ -4,3 +4,26 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
+
+  release:
+    # Publish the .uf2 files as a GitHub release after each build of main
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: firmware
+          path: firmware
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          gh release create "build-${{ github.run_number }}" firmware/*.uf2 \
+            --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
+            --title "Firmware build ${{ github.run_number }}" \
+            --notes "Built from ${{ github.sha }}. ${COMMIT_MSG}"
