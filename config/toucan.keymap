@@ -212,7 +212,7 @@
 &kp GRAVE       &kp Q  &kp P  &kp U  &kp F  &kp SINGLE_QUOTE               &kp MINUS   &kp N  &kp S  &kp R  &kp Y  &kp UNDERSCORE
 &kp SPACE       &kp E  &kp I  &kp A  &kp O  &double_tap_semi_colon         &kp H       &kp J  &kp K  &kp L  &kp T  &kp B
 &kp LEFT_SHIFT  &kp Z  &kp X  &kp C  &kp V  &kp COMMA                      &kp PERIOD  &kp D  &kp M  &kp G  &kp W  &kp RIGHT_SHIFT
-            &double_tap_CTC_ctrl  &double_tap_SNIPE_alt  &kp LC(LEFT_ALT)  &kp RS(RIGHT_GUI)  &double_tap_SMB_gui  &double_tap_ARW_shift
+            &kp LC(LEFT_ALT)  &double_tap_CTC_ctrl  &double_tap_SNIPE_alt  &double_tap_SMB_gui  &double_tap_ARW_shift  &kp RS(RIGHT_GUI)
             >;
         };
 
@@ -222,7 +222,7 @@
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-            &double_tap_CTC_alt  &double_tap_SNP_ctrl  &trans  &trans  &double_tap_SMB_shift  &double_tap_ARW_gui
+            &trans  &double_tap_CTC_alt  &double_tap_SNP_ctrl  &double_tap_SMB_shift  &double_tap_ARW_gui  &trans
             >;
         };
 
@@ -232,7 +232,7 @@
 &kp ESCAPE        &kp LC(Q)   &kp LC(P)  &kp LC(U)  &kp LC(F)  &trans               &trans         &kp LC(S)   &kp LC(N)     &kp LC(R)  &kp LC(Y)  &kp ESCAPE
 &kp LEFT_CONTROL  &kp END     &kp TAB    &kp HOME   &kp LC(O)  &kp LC(SEMICOLON)    &kp BACKSPACE  &kp ENTER   &kp LC(K)     &kp LC(L)  &trans     &trans
 &trans            &kp DELETE  &trans     &kp LC(C)  &kp LC(V)  &trans               &trans         &kp ESCAPE  &kp KP_ENTER  &trans     &kp LC(W)  &trans
-            &double_tap_CTC_alt  &double_tap_SNP_ctrl  &kp LS(LEFT_GUI)  &kp RA(RIGHT_CONTROL)  &double_tap_SMB_shift  &double_tap_ARW_gui
+            &kp LS(LEFT_GUI)  &double_tap_CTC_alt  &double_tap_SNP_ctrl  &double_tap_SMB_shift  &double_tap_ARW_gui  &kp RA(RIGHT_CONTROL)
             >;
         };
 
@@ -242,7 +242,7 @@
 &kp TILDE  &trans                        &kp KP_NUMBER_7             &kp KP_NUMBER_8           &kp KP_NUMBER_9           &kp DOUBLE_QUOTES    &kp UNDERSCORE  &trans          &trans        &trans           &kp PRINTSCREEN  &kp F12
 &trans     &trans                        &kp KP_NUMBER_4             &kp KP_NUMBER_5           &kp KP_NUMBER_6           &kp COLON            &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &trans           &kp PRINTSCREEN
 &trans     &mt LEFT_CONTROL KP_NUMBER_0  &mt LEFT_SHIFT KP_NUMBER_1  &mt LEFT_ALT KP_NUMBER_2  &mt LEFT_GUI KP_NUMBER_3  &trans               &trans          &trans          &trans        &trans           &trans           &mo 6
-            &double_tap_CTC_alt  &double_tap_SNP_ctrl  &kp LS(LEFT_GUI)  &kp RA(RIGHT_CONTROL)  &double_tap_SMB_shift  &double_tap_ARW_gui
+            &kp LS(LEFT_GUI)  &double_tap_CTC_alt  &double_tap_SNP_ctrl  &double_tap_SMB_shift  &double_tap_ARW_gui  &kp RA(RIGHT_CONTROL)
             >;
         };
 
@@ -252,7 +252,7 @@
 &trans            &kp F1   &kp F2   &kp F3     &kp F4     &kp F5     &trans                  &mkp MCLK  &kp LG(TAB)  &kp LA(R)                &mkp MB4  &trans
 &kp LEFT_CONTROL  &kp F6   &kp F7   &kp F8     &kp F9     &kp F10    &kp LC(LG(LEFT_ARROW))  &mkp LCLK  &mkp RCLK    &kp LC(LG(RIGHT_ARROW))  &trans    &trans
 &kp LEFT_SHIFT    &kp F11  &kp F12  &kp LC(C)  &kp LC(V)  &trans     &mkp MB5                &mkp MB4   &trans       &trans                   &trans    &trans
-            &kp LEFT_CONTROL  &kp LEFT_ALT  &trans  &trans  &kp RIGHT_GUI  &kp RIGHT_SHIFT
+            &trans  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp RIGHT_GUI  &kp RIGHT_SHIFT  &trans
             >;
         };
 
@@ -262,7 +262,7 @@
 &kp TILDE  &kp EXCLAMATION  &kp AT_SIGN   &kp HASH      &kp DOLLAR     &kp PERCENT     &kp CARET     &kp AMPERSAND     &kp ASTERISK       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &trans
 &kp EQUAL  &kp NUMBER_1     &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4   &kp NUMBER_5    &kp NUMBER_6  &kp NUMBER_7      &kp NUMBER_8       &kp NUMBER_9          &kp NUMBER_0           &kp PLUS
 &trans     &kp QUESTION     &kp PIPE      &kp SLASH     &kp BACKSLASH  &trans          &trans        &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp LEFT_BRACE        &kp RIGHT_BRACE        &trans
-            &kp LEFT_CONTROL  &kp LEFT_ALT  &trans  &trans  &kp RIGHT_GUI  &kp RIGHT_SHIFT
+            &trans  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp RIGHT_GUI  &kp RIGHT_SHIFT  &trans
             >;
         };
 
@@ -272,7 +272,7 @@
 &bt BT_SEL 0    &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4  &bt BT_SEL 5      &trans      &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &trans  &trans
 &trans          &out OUT_USB  &out OUT_BLE  &trans        &trans        &trans            &kp PERIOD  &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6  &trans  &trans
 &studio_unlock  &trans        &trans        &trans        &trans        &bt BT_CLR_ALL    &kp NUMBER_0  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &trans  &trans
-            &kp LEFT_CONTROL  &kp LEFT_ALT  &trans  &trans  &kp RIGHT_GUI  &kp RIGHT_SHIFT
+            &trans  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp RIGHT_GUI  &kp RIGHT_SHIFT  &trans
             >;
         };
 
@@ -282,7 +282,7 @@
 &trans  &trans  &trans  &trans  &trans  &trans    &trans                  &mkp MCLK  &kp LG(TAB)  &trans                   &mkp MB4  &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &kp LC(LG(LEFT_ARROW))  &mkp LCLK  &mkp RCLK    &kp LC(LG(RIGHT_ARROW))  &trans    &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &mkp MB5                &trans     &trans       &trans                   &trans    &trans
-            &kp LEFT_CONTROL  &kp LEFT_ALT  &trans  &trans  &kp RIGHT_GUI  &kp LEFT_SHIFT
+            &trans  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp RIGHT_GUI  &kp LEFT_SHIFT  &trans
             >;
         };
 
