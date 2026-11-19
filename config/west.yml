@@ -8,6 +8,8 @@ manifest:
       url-base: https://github.com/geeksville
     - name: beekeeb
       url-base: https://github.com/beekeeb
+    - name: matchey
+      url-base: https://github.com/matchey
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -22,5 +24,8 @@ manifest:
     - name: zmk-input-zoom
       remote: beekeeb
       revision: main
+    - name: zmk-input-processor-axis-constrain
+      remote: matchey
+      revision: v0.2.0
   self:
     path: config

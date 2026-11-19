@@ -3,10 +3,17 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/pointing.h>
+#include <axis-constrain.dtsi>
 
 // Layers mirror zmk-config-mtk64 (same indices) on the shared (3x6 + 3) x 2 keys.
 // RA(RIGHT_CONTROL) stands for mtk64's RC(RIGHT_ALT): RC() collides with the matrix-transform macro.
-// Temporary trackpad setup: no layer switch on touch; one-finger scroll while CTC (2) is held.
+// Temporary trackpad setup: no layer switch on touch; one-finger scroll while CTC (2) is held;
+// slow, horizontal/vertical-only pointer while SNP (4) is held.
+
+&zip_axis_constrain {
+    axis-lock-threshold = <10>;
+    axis-tolerance-deg = <30>;
+};
 
 &trackpad_listener {
     input-processors =
@@ -16,6 +23,13 @@
         <&swipe_button_mapper>;
 
     scroller { layers = <2>; };
+
+    // process-next keeps zoom and swipe gestures working on the SNP layer.
+    cardinal_snipe {
+        layers = <4>;
+        input-processors = <&zip_axis_constrain>, <&zip_xy_scaler 1 5>;
+        process-next;
+    };
 };
 
 / {
