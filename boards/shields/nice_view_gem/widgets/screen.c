@@ -21,12 +21,18 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/usb.h>
 #include <zmk/split/central.h>
 
-#if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 2
+#if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN >= 2
 #include "battery_arc.h"
 #include "battery_arc_peripheral.h"
 #include "profile_arc.h"
 #include "output_arc.h"
+#if CONFIG_TOUCAN_STATUS_SCREEN == 2
 #include "chart.h"
+#else
+#include <zmk/events/keycode_state_changed.h>
+#include <zmk/hid.h>
+#include "modifiers.h"
+#endif
 #else
 #include "battery.h"
 #include "battery_peripheral.h"
@@ -36,7 +42,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 1
 #include "layer_logo.h"
-#elif defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 2
+#elif defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN >= 2
 #include "layer_arc.h"
 #else
 #include "layer.h"
@@ -68,6 +74,8 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     draw_output_status(canvas, state);
     #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 2
     draw_chart_status(canvas, state);
+    #elif defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 3
+    draw_modifier_status(canvas, state);
     #endif
     draw_layer_status(canvas, state);
     draw_profile_status(canvas, state);
@@ -283,6 +291,35 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_chart_status, struct chart_status_state,
 ZMK_SUBSCRIPTION(widget_chart_status, zmk_wpm_state_changed);
 #endif
 
+#if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 3
+/**
+ * Modifier status
+ */
+
+static void set_modifiers_status(struct zmk_widget_screen *widget,
+                                 struct modifiers_status_state state) {
+    widget->state.mods = state.mods;
+    draw_top(widget->obj, widget->cbuf, &widget->state);
+}
+
+static void modifiers_status_update_cb(struct modifiers_status_state _state) {
+    // Listener order relative to hid_listener is not guaranteed, so the HID report may not
+    // reflect this event yet when get_state runs. This callback runs later on the display
+    // work queue, after the event has been fully processed.
+    const struct modifiers_status_state state = {.mods = zmk_hid_get_explicit_mods()};
+    struct zmk_widget_screen *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_modifiers_status(widget, state); }
+}
+
+static struct modifiers_status_state modifiers_status_get_state(const zmk_event_t *_eh) {
+    return (struct modifiers_status_state){.mods = zmk_hid_get_explicit_mods()};
+}
+
+ZMK_DISPLAY_WIDGET_LISTENER(widget_modifiers_status, struct modifiers_status_state,
+                            modifiers_status_update_cb, modifiers_status_get_state);
+ZMK_SUBSCRIPTION(widget_modifiers_status, zmk_keycode_state_changed);
+#endif
+
 /**
  * Initialization
  **/
@@ -303,6 +340,8 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
 
     #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 2
     widget_chart_status_init();
+    #elif defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 3
+    widget_modifiers_status_init();
     #endif
 
     return 0;

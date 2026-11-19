@@ -2,6 +2,7 @@
 
 #include <lvgl.h>
 #include <zmk/endpoints.h>
+#include <zmk/hid.h>
 
 #define SCREEN_WIDTH 144
 #define SCREEN_HEIGHT 168
@@ -19,6 +20,7 @@ struct status_state {
     bool charging;
     bool charging_p;
     uint8_t wpm;
+    zmk_mod_flags_t mods;
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     struct zmk_endpoint_instance selected_endpoint;
     int active_profile_index;
