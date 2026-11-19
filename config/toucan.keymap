@@ -1,82 +1,304 @@
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/pointing.h>
 
-#define BASE 0
-#define NAV  1
-#define SYM  2
-#define ADJ  3
+// Layers mirror zmk-config-mtk64 (same indices) on the shared (3x6 + 3) x 2 keys.
+// RA(RIGHT_CONTROL) stands for mtk64's RC(RIGHT_ALT): RC() collides with the matrix-transform macro.
+// Temporary trackpad setup: no layer switch on touch; one-finger scroll while CTC (2) is held.
+
+&trackpad_listener {
+    input-processors =
+        <&zip_xy_scaler 100 100>,
+        <&zip_scroll_scaler 1 20>,
+        <&zip_zoom_mapper>,
+        <&swipe_button_mapper>;
+
+    scroller { layers = <2>; };
+};
 
 / {
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <1 2>;
-            then-layer = <3>;
+    behaviors {
+        double_tap_semi_colon: double_tap_semi_colon {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp SEMICOLON>, <&kp COLON>;
+        };
+
+        // The same key (Press the modifier key on the layer after moving)
+
+        double_tap_CTC_ctrl: double_tap_CTC_ctrl {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&mo 2>, <&CTC_ctrl>;
+        };
+
+        double_tap_ARW_shift: double_tap_ARW_shift {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&mo 3>, <&ARW_shift>;
+        };
+
+        double_tap_SNIPE_alt: double_tap_SNIPE_alt {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&mo 4>, <&SNP_alt>;
+        };
+
+        double_tap_SMB_gui: double_tap_SMB_gui {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&mo 5>, <&SMB_gui>;
+        };
+
+        // The same finger (Press the modifier key on the same hand after moving the layer)
+
+        double_tap_SNP_ctrl: double_tap_SNP_ctrl {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp LEFT_ALT>, <&SNP_ctrl>;
+        };
+
+        double_tap_SMB_shift: double_tap_SMB_shift {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp RIGHT_GUI>, <&SMB_shift>;
+        };
+
+        double_tap_CTC_alt: double_tap_CTC_alt {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp LCTRL>, <&CTC_alt>;
+        };
+
+        double_tap_ARW_gui: double_tap_ARW_gui {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp RIGHT_SHIFT>, <&ARW_gui>;
+        };
+    };
+};
+
+/ {
+    combos {
+        compatible = "zmk,combos";
+
+        muhenkan {
+            bindings = <&kp INT_MUHENKAN>;
+            key-positions = <16 17>;
+        };
+
+        henkan {
+            bindings = <&kp INT_HENKAN>;
+            key-positions = <18 19>;
+        };
+
+        ctrl_shift {
+            bindings = <&kp LC(RIGHT_SHIFT)>;
+            key-positions = <36 41>;
+        };
+
+        ctrl_gui {
+            bindings = <&kp LC(RIGHT_GUI)>;
+            key-positions = <36 40>;
+        };
+
+        alt_gui {
+            bindings = <&kp LA(RIGHT_GUI)>;
+            key-positions = <37 40>;
+        };
+
+        alt_shift {
+            bindings = <&kp LA(RIGHT_SHIFT)>;
+            key-positions = <37 41>;
+        };
+    };
+
+    macros {
+        CTC_ctrl: CTC_ctrl {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 2 &kp LEFT_CONTROL>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 2 &kp LEFT_CONTROL>;
+        };
+
+        ARW_shift: ARW_shift {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 3 &kp RIGHT_SHIFT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 3 &kp RIGHT_SHIFT>;
+        };
+
+        SNP_alt: SNP_alt {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 4 &kp LEFT_ALT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 4 &kp LEFT_ALT>;
+        };
+
+        SMB_gui: SMB_gui {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 5 &kp RIGHT_GUI>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 5 &kp RIGHT_GUI>;
+        };
+
+        SNP_ctrl: SNP_ctrl {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 4 &kp LEFT_CONTROL>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 4 &kp LEFT_CONTROL>;
+        };
+
+        SMB_shift: SMB_shift {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 5 &kp RIGHT_SHIFT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 5 &kp RIGHT_SHIFT>;
+        };
+
+        CTC_alt: CTC_alt {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 2 &kp LEFT_ALT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 2 &kp LEFT_ALT>;
+        };
+
+        ARW_gui: ARW_gui {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&mo 3 &kp RIGHT_GUI>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 3 &kp RIGHT_GUI>;
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        base {
-            display-name = "BASE";
+        default_layer {
+            display-name = "DEF";
             bindings = <
-                &kp TAB   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp LCTRL &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-                &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-                                &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &kp RALT
+&kp GRAVE       &kp Q  &kp P  &kp U             &kp F                 &kp SINGLE_QUOTE        &kp MINUS            &kp N                  &kp S              &kp R  &kp Y  &kp UNDERSCORE
+&kp SPACE       &kp E  &kp I  &kp A             &kp O                 &double_tap_semi_colon  &kp H                &kp J                  &kp K              &kp L  &kp T  &kp B
+&kp LEFT_SHIFT  &kp Z  &kp X  &kp C             &kp V                 &kp COMMA               &kp PERIOD           &kp D                  &kp M              &kp G  &kp W  &kp RIGHT_SHIFT
+                              &kp LC(LEFT_ALT)  &double_tap_CTC_ctrl  &double_tap_SNIPE_alt   &double_tap_SMB_gui  &double_tap_ARW_shift  &kp RS(RIGHT_GUI)
             >;
         };
 
-        nav {
-            display-name = "NAV";
+        modifiers {
+            display-name = "MDF";
             bindings = <
-                &kp TAB     &kp N1          &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-                &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-                &kp LSHFT   &studio_unlock  &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                                                &kp LGUI     &trans       &kp SPACE      &kp RET  &trans   &kp RALT
+&trans  &trans  &trans  &trans  &trans               &trans                &trans                 &trans               &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans               &trans                &trans                 &trans               &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans               &trans                &trans                 &trans               &trans  &trans  &trans  &trans
+                        &trans  &double_tap_CTC_alt  &double_tap_SNP_ctrl  &double_tap_SMB_shift  &double_tap_ARW_gui  &trans
             >;
         };
 
-        sym {
-            display-name = "SYM";
+        control_char {
+            display-name = "CTC";
             bindings = <
-                &kp TAB   &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
-                &kp LCTRL &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
-                &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
-                                          &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+&kp ESCAPE        &kp LC(Q)   &kp LC(P)  &kp LC(U)         &kp LC(F)            &trans                &trans                 &kp LC(S)            &kp LC(N)              &kp LC(R)  &kp LC(Y)  &kp ESCAPE
+&kp LEFT_CONTROL  &kp END     &kp TAB    &kp HOME          &kp LC(O)            &kp LC(SEMICOLON)     &kp BACKSPACE          &kp ENTER            &kp LC(K)              &kp LC(L)  &trans     &trans
+&trans            &kp DELETE  &trans     &kp LC(C)         &kp LC(V)            &trans                &trans                 &kp ESCAPE           &kp KP_ENTER           &trans     &kp LC(W)  &trans
+                                         &kp LS(LEFT_GUI)  &double_tap_CTC_alt  &double_tap_SNP_ctrl  &double_tap_SMB_shift  &double_tap_ARW_gui  &kp RA(RIGHT_CONTROL)
             >;
         };
 
-        adj {
-            display-name = "ADJ";
+        arrow {
+            display-name = "MSE";
             bindings = <
-                &mo TAB   &trans &kp F7 &kp F8 &kp F9 &kp F12   &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans &trans &kp BSPC
-                &kp LCTRL &trans &kp F4 &kp F5 &kp F6 &kp F11   &trans       &trans      &trans       &trans &trans &trans
-                &bt LSHFT &trans &kp F1 &kp F2 &kp F3 &kp F10   &trans       &trans      &trans       &trans &trans &trans
-                                   &kp LGUI &mo NAV &kp SPACE   &kp RET &mo 2 &kp RALT
+&kp TILDE  &trans                        &kp KP_NUMBER_7             &kp KP_NUMBER_8           &kp KP_NUMBER_9           &kp DOUBLE_QUOTES     &kp UNDERSCORE         &trans               &trans                 &trans           &kp PRINTSCREEN  &kp F12
+&trans     &trans                        &kp KP_NUMBER_4             &kp KP_NUMBER_5           &kp KP_NUMBER_6           &kp COLON             &kp LEFT_ARROW         &kp DOWN_ARROW       &kp UP_ARROW           &kp RIGHT_ARROW  &trans           &kp PRINTSCREEN
+&trans     &mt LEFT_CONTROL KP_NUMBER_0  &mt LEFT_SHIFT KP_NUMBER_1  &mt LEFT_ALT KP_NUMBER_2  &mt LEFT_GUI KP_NUMBER_3  &trans                &trans                 &trans               &trans                 &trans           &trans           &mo 6
+                                                                     &kp LS(LEFT_GUI)          &double_tap_CTC_alt       &double_tap_SNP_ctrl  &double_tap_SMB_shift  &double_tap_ARW_gui  &kp RA(RIGHT_CONTROL)
             >;
         };
 
-        mouse {
-            display-name = "MOU";
+        snipe {
+            display-name = "SNP";
             bindings = <
-                &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
-                &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
-                &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
-                            &mkp MCLK &mkp LCLK &mkp RCLK           &mkp LCLK &mkp RCLK &mkp MCLK
+&trans            &kp F1   &kp F2   &kp F3     &kp F4            &kp F5        &trans                  &mkp MCLK        &kp LG(TAB)  &kp LA(R)                &mkp MB4  &trans
+&kp LEFT_CONTROL  &kp F6   &kp F7   &kp F8     &kp F9            &kp F10       &kp LC(LG(LEFT_ARROW))  &mkp LCLK        &mkp RCLK    &kp LC(LG(RIGHT_ARROW))  &trans    &trans
+&kp LEFT_SHIFT    &kp F11  &kp F12  &kp LC(C)  &kp LC(V)         &trans        &mkp MB5                &mkp MB4         &trans       &trans                   &trans    &trans
+                                    &trans     &kp LEFT_CONTROL  &kp LEFT_ALT  &kp RIGHT_GUI           &kp RIGHT_SHIFT  &trans
             >;
         };
 
-        extra_2 {
-                status = "reserved";
+        symbols {
+            display-name = "SMB";
+            bindings = <
+&kp TILDE  &kp EXCLAMATION  &kp AT_SIGN   &kp HASH      &kp DOLLAR        &kp PERCENT   &kp CARET      &kp AMPERSAND     &kp ASTERISK       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &trans
+&kp EQUAL  &kp NUMBER_1     &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4      &kp NUMBER_5  &kp NUMBER_6   &kp NUMBER_7      &kp NUMBER_8       &kp NUMBER_9          &kp NUMBER_0           &kp PLUS
+&trans     &kp QUESTION     &kp PIPE      &kp SLASH     &kp BACKSLASH     &trans        &trans         &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp LEFT_BRACE        &kp RIGHT_BRACE        &trans
+                                          &trans        &kp LEFT_CONTROL  &kp LEFT_ALT  &kp RIGHT_GUI  &kp RIGHT_SHIFT   &trans
+            >;
         };
 
-        extra_3 {
-                status = "reserved";
+        numbers {
+            display-name = "NUM";
+            bindings = <
+&bt BT_SEL 0    &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4      &bt BT_SEL 5    &trans         &kp NUMBER_7     &kp NUMBER_8  &kp NUMBER_9  &trans  &trans
+&trans          &out OUT_USB  &out OUT_BLE  &trans        &trans            &trans          &kp PERIOD     &kp NUMBER_4     &kp NUMBER_5  &kp NUMBER_6  &trans  &trans
+&studio_unlock  &trans        &trans        &trans        &trans            &bt BT_CLR_ALL  &kp NUMBER_0   &kp NUMBER_1     &kp NUMBER_2  &kp NUMBER_3  &trans  &trans
+                                            &trans        &kp LEFT_CONTROL  &kp LEFT_ALT    &kp RIGHT_GUI  &kp RIGHT_SHIFT  &trans
+            >;
         };
+
+        automouse {
+            display-name = "AML";
+            bindings = <
+&trans  &trans  &trans  &trans  &trans            &trans        &trans                  &mkp MCLK       &kp LG(TAB)  &trans                   &mkp MB4  &trans
+&trans  &trans  &trans  &trans  &trans            &trans        &kp LC(LG(LEFT_ARROW))  &mkp LCLK       &mkp RCLK    &kp LC(LG(RIGHT_ARROW))  &trans    &trans
+&trans  &trans  &trans  &trans  &trans            &trans        &mkp MB5                &trans          &trans       &trans                   &trans    &trans
+                        &trans  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp RIGHT_GUI           &kp LEFT_SHIFT  &trans
+            >;
+        };
+
+        layer_8 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+                        &trans  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        extra_2 { status = "reserved"; };
+
+        extra_3 { status = "reserved"; };
     };
 };
